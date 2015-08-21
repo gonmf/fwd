@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Flowing Web Documents">
+    <title>Flowing Web Documents</title>
+    <style>
+      body{
+        color: #000;
+        font-family: serif;
+      }
+    </style>
+  </head>
+<body bgcolor="#bbb">
+<h1>Flowing Web Documents</h1>
+<p>This is a proposal document that identifies two things: basic requirements a language for web based documents should have, and a proposal for a language that meets this requirements.</p>
+<p>Previous knowledge of HTML is encouraged.</p>
+<h3>Requirements of a web document language</h3>
+<p>1. It should be easy to expose information to the reader: I shouldn't need a lot of formatting sugar to produce a document.</p>
+<p>2. There should be little assumptions on the capabilities of the reader and web browser: accessibility is extremelly important, not only sensorial but also about the languages used and the way the user can navigate and manipulate a document. A document is not a piece of art for the original creator to expect control over how it is displayed. There is also an increasing trend for accessing documents with differing layouts and resolutions.</p>
+<p>3. The contents of a document should be kept sane. Just as you wouldn't expect a book to do something behind your back, you shouldn't expect a web document to be interactive. The activity should be in the hands, and control, of the user.</p>
+<p>4. A network of linked documents is by itself only as rich as the information that was codified by the hosts. Therefore the reader should have the ability to further link documents, modify, annotate and improve on the experience.</p>
+<p>In conclusion, this document proposes a language for writing documents oriented for the web that puts the user as the focal point of document display and use, facilitate common actions taken on documents, and overall improve the useability of the web.</p>
+<h3>The flowing web document</h3>
+<p>The proposed language assumes a document aims to codify some knowledge, and it's quality is as the ability of all the pieces involved in transmitting that information to the reader. No matter how responsive or beautiful your website is, if is not optimized for my phone screen. No matter how well written in English it is, if I cannot read English. You get the point. The variety of uses is too large for a web host to be able to consistenly deliver the intended knowledge to its reader. This proposal starts tackling this by a flowing document layout.</p>
+<p>The flowing layout considers contexts; pieces of information that should logically be rendered together. The contents of a context however can be more or less stretched and moved around to better fit the desired display. What best fit means is what the user is most confortable with, and should be configurable in the web browser. For contrast this webpage written in HTML by default left justifies everything. Contexts can also contain other contexts, consider the example of a text that contains a figure with a caption. You probably mean the caption to be close to the figure, with the positioning of the figure in the overall text being less important.</p>
+<p>For the contexts to naturally adjust it's form to the display there needs to be a display referential, that is to say, a way the display is bound and direction for it to flow. Right now in HTML documents can usually flow in both an xx and yy axis. Again, this behaviour should be configurable, with the default only a yy axis to resemble printed media. The content could also be possible to flow in columns, and to cycle these columns through a xx axis. Through the use of flowing documents I should be able to have all documents of the web simultaneously adapt to the way I want to browse them, as well as the density of information I want to be greeted with.</p>
+<h3>The language</h3>
+<p>Since the language is based on context, it makes sense that the basic construct is a bounding context:</p>
+<pre>{ This is some content. }</pre>
+<p>This is a simple context, meaning it doesn't have any special meaning beyond implying some information should be kept together. Instead of using a space after the starting curly brace we could also use a function. Consider the following:</p>
+<pre>{header This is a header}</pre>
+<p>In this case the function <i>header</i> is operated on the rest of the context, and the browser would probably treat it differently. Functions always have either one or two arguments. Before showing all the available functions let's look at some more difficult examples making use of two arguments:</p>
+<pre>{language français
+	{
+		{header Croissants}
+		au fromage {link email:name@organization.code contact information}
+	}
+}</pre>
+<p>Here we see how we can inform the browser of the language being used in the text. An intelligent browser should have the ability to translate it to another language if it better fits the users needs. We also notice the ubiquitous <i>link</i> function. Again, no guarantees are made about what it does besides that somehow the first argument links to something that is described in the second argument. A browser might not display it's text; might compose a references list, might replace the text by something else and only show it on mouseover and so on. It should be whatever is best for the user, which probably depends on what the first argument refers to, which brings us to document bookmarks:</p>
+<pre>{mark Bibliography {header Bibliography}}</pre>
+<p>Naturally the browser might already compose its quick access index of headers in the document for easier browsing, but adding a <i>mark</i> function guarantees there should be some way for me to quickly jump from one part of the document to the other; or be shown a preview, and so on. Finally, the remaining fragments of text in a context always form the last argument of the function; if this is not intended open a new context.<p>
+<pre>{header { Name} { Some content} { More content}}</pre>
+<p>The above example just uses as first and only context the whole three contexts passed, there is no way to over-parametrize functions. The curly braces characters can also be escaped by using \{ and \} instead. And to finish, doing somethind like bellow or related nonsense is subject to the browsers disposition on what to do with the inner most contexts. The outermost should be valid in its behaviour.</p>
+<pre>{link uri:abc {link uri:xyz This might make your browser cry.}}</pre>
+<h3>Complete functions list</h3>
+<pre>section 1</pre>
+<p>By putting section contexts inside section contexts, and also using header contexts we can automatically define the level of document content.</p>
+<pre>header 1</pre>
+<p>Argument is the header text.</p>
+<pre>link 2</pre>
+<p>Arguments are first the URI of the linked resource and secondly the description of the resource.</p>
+<pre>language 1</pre>
+<p>Argument is the name of the language; languages can have multiple variants and be spelled and written in different languages as well. You can use <i>none</i> to specify something is impossible to translate.</p>
+<pre>emph 1</pre>
+<p>Argument is the content to which to apply emphasis.</p>
+<pre>scratch 1</pre>
+<p>Argument is the content to mark as wrong or out-of-date; can be difficult to express not visually.</p>
+<pre>spoiler 1</pre>
+<p>Hide the argument content until the user activates it. The hidden content should maintain it's occupied space in a display even if not shown or obfuscated.</p>
+<pre>warn 2</pre>
+<p>Similar to spoiler but with a descriptive warning as second parameter. May require human confirmation so avoid abusing this.</p>
+<pre>mark 1</pre>
+<p>Mark a context in a unique keyword that can be later used for links inside the document.</p>
+<pre>embed 2</pre>
+<p>Embed a file. This should be done in moderation for files whose size is not easy to resize, which is the case of images that shouldn't be stretched. Whether or not a file is embeded or a link created, or some other solution used is again browser dependent and user configurable. The first argument is an URI and the second is a textual representation. It is very important to have descriptive representations for when that file type is not displayed visually.</p>
+<pre>quote 1</pre>
+<p>Marks a context as being a quotation. Should probablybe part of a context with the information on the author.</p>
+<pre>listing 1</pre>
+<p>Does not produce a list! Instead is should output its parameters as readable a representation as possible. Can be used for instance to render code in monospace or hexadecimal data.</p>
+<pre>bullet 1</pre>
+<p>Produces one bullet point for some context. To change the level of the bullet points just used them inside other bullet point contexts or <i>enum</i> contexts.</p>
+<pre>enum 1</pre>
+<p>Similar to bullet but with an enumeration.</p>
+<pre>keyword 1</pre>
+<p>Used to indicate a certain word is important and should be either stylicized or added to an index, if it exists.</p>
+<pre>note 1</pre>
+<p>Used to indicate or introduce something that doesn't really follow the text flow, but should be made a note of. Can be for instance a footnote or commentary box, or just indented text.</p>
+<pre>format 2</pre>
+<p>Used to format the second argument with the type of the first argument. Useful for country independent units, phone numbers, currencies, dates, ...</p>
+<pre>define 2</pre>
+<p>This function allows the definition of new, non recursive, functions, for instance:</p>
+<pre>{define newchapter {section {header %1} %2}}</pre>
+<p>The symbols %1 and %2 are only understood inside a <i>define</i> function and can be escaped with \%. Outside of a <i>define</i> function they don't have to be escaped but it's a good practise since another document might embed yours and cause some confusion. Note that you still can't have more than two parameters.</p>
+<h3>What is expected of a web browser</h3>
+<p>The web browser should be configurable about how the information is convened, and for each method what is the preferred way of doing so. For visual rendering it should be capable of automatic and on demand translation of text, spell checking, be flexible about how date/time, units and other country dependent information is displayed. It should also obey the user preferences on document information density, text orientation, rendering direction, text effects, font family and size, effects and colors for specific functions and background color. It should further be configurable on how to display descriptions, produce automatic short versions of text, embed some types of files and how to treat followed links by file type.<p>
+<p>For non-visual queues is should support text-to-speech conversion and audio queues, as well as speech-to-text conversion for word search.</p>
+<p>In general the browser should also be capable of supporting adding extra links, commentary, emphasis, notes and embed other media on their personal view on the document. This does not necessarily affect how others perceive the document, but this data should be reasonably expected to remain in place even if a document is changed by the host. When the host changes the document, the user should have the ability to see his changes on the previous, locally stored version of the document; and to his changes that remain valid in the new document.</p>
+<p>It should also be possible to specify how you want content to flow and specify some configuration on a domain by domain basis, instead of for the whole web.</p>
+<hr>
+This proposal was written in the hope that it will be useful. For criticism please e-mail me at gonmf [at] sapo.pt
+</body>
+</html>
