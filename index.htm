@@ -12,20 +12,21 @@
     </style>
   </head>
 <body bgcolor="#bbb">
-<h1>Flowing Web Documents</h1>
+<h1>Flowing Web Documents (fwd:rev3)</h1>
 <p>This is a proposal document that identifies two things: basic requirements a language for web based documents should have, and a proposal for a language that meets this requirements.</p>
 <p>Previous knowledge of HTML is encouraged.</p>
-<h3>Requirements of a web document language</h3>
+<h2>Requirements of a web document language</h2>
 <p>1. It should be easy to expose information to the reader: I shouldn't need a lot of formatting sugar to produce a document.</p>
 <p>2. There should be little assumptions on the capabilities of the reader and web browser: accessibility is extremelly important, not only sensorial but also about the languages used and the way the user can navigate and manipulate a document. A document is not a piece of art for the original creator to expect control over how it is displayed. There is also an increasing trend for accessing documents with differing layouts and resolutions.</p>
 <p>3. The contents of a document should be kept sane. Just as you wouldn't expect a book to do something behind your back, you shouldn't expect a web document to be interactive. The activity should be in the hands, and control, of the user.</p>
 <p>4. A network of linked documents is by itself only as rich as the information that was codified by the hosts. Therefore the reader should have the ability to further link documents, modify, annotate and improve on the experience.</p>
 <p>In conclusion, this document proposes a language for writing documents oriented for the web that puts the user as the focal point of document display and use, facilitate common actions taken on documents, and overall improve the useability of the web.</p>
-<h3>The flowing web document</h3>
+<h2>The flowing web document</h2>
 <p>The proposed language assumes a document aims to codify some knowledge, and it's quality is as the ability of all the pieces involved in transmitting that information to the reader. No matter how responsive or beautiful your website is, if is not optimized for my phone screen. No matter how well written in English it is, if I cannot read English. You get the point. The variety of uses is too large for a web host to be able to consistenly deliver the intended knowledge to its reader. This proposal starts tackling this by a flowing document layout.</p>
 <p>The flowing layout considers contexts; pieces of information that should logically be rendered together. The contents of a context however can be more or less stretched and moved around to better fit the desired display. What best fit means is what the user is most confortable with, and should be configurable in the web browser. For contrast this webpage written in HTML by default left justifies everything. Contexts can also contain other contexts, consider the example of a text that contains a figure with a caption. You probably mean the caption to be close to the figure, with the positioning of the figure in the overall text being less important.</p>
-<p>For the contexts to naturally adjust it's form to the display there needs to be a display referential, that is to say, a way the display is bound and direction for it to flow. Right now in HTML documents can usually flow in both an xx and yy axis. Again, this behaviour should be configurable, with the default only a yy axis to resemble printed media. The content could also be possible to flow in columns, and to cycle these columns through a xx axis. Through the use of flowing documents I should be able to have all documents of the web simultaneously adapt to the way I want to browse them, as well as the density of information I want to be greeted with.</p>
-<h3>The language</h3>
+<p><img src="example.png"><br>Fig. 1 - Example of possible visual renderings where more maleable content is adjusted to the screen. Notice how a scrollbar is added in the second example instead of increasing the density of content.</p>
+<p>For the contexts to naturally adjust it's form to the display there needs to be a display referential, that is to say, a way the display is bound and direction for it to flow. Right now in HTML documents can usually flow in both an xx and yy axis. Again, this behaviour should be configurable, with the default only a yy axis to resemble printed media. The content could also be possible to flow in columns, and to cycle these columns through a xx axis. Through the use of flowing documents I should be able to have all documents of the web simultaneously adapt to the way I want to browse them, as well as the density of information I want to be greeted with, see for instance the depiction in Figure 1. It shows the exact same number of contexts.</p>
+<h2>The language</h2>
 <p>Since the language is based on context, it makes sense that the basic construct is a bounding context:</p>
 <pre>{ This is some content. }</pre>
 <p>This is a simple context, meaning it doesn't have any special meaning beyond implying some information should be kept together. Instead of using a space after the starting curly brace we could also use a function. Consider the following:</p>
@@ -43,7 +44,7 @@
 <pre>{header { Name} { Some content} { More content}}</pre>
 <p>The above example just uses as first and only context the whole three contexts passed, there is no way to over-parametrize functions. The curly braces characters can also be escaped by using \{ and \} instead. And to finish, doing somethind like bellow or related nonsense is subject to the browsers disposition on what to do with the inner most contexts. The outermost should be valid in its behaviour.</p>
 <pre>{link uri:abc {link uri:xyz This might make your browser cry.}}</pre>
-<h3>Complete functions list</h3>
+<h2>Functions list</h2>
 <pre>section 1</pre>
 <p>By putting section contexts inside section contexts, and also using header contexts we can automatically define the level of document content.</p>
 <pre>header 1</pre>
@@ -61,9 +62,9 @@
 <pre>warn 2</pre>
 <p>Similar to spoiler but with a descriptive warning as second parameter. May require human confirmation so avoid abusing this.</p>
 <pre>mark 1</pre>
-<p>Mark a context in a unique keyword that can be later used for links inside the document.</p>
+<p>Mark a context in a unique keyword that can be later used for links inside the document. Bookmarks are local to the file they are declared in.</p>
 <pre>embed 2</pre>
-<p>Embed a file. This should be done in moderation for files whose size is not easy to resize, which is the case of images that shouldn't be stretched. Whether or not a file is embeded or a link created, or some other solution used is again browser dependent and user configurable. The first argument is an URI and the second is a textual representation. It is very important to have descriptive representations for when that file type is not displayed visually.</p>
+<p>Embed a file. This should be done in moderation for files whose size is not easy to resize, which is the case of images that shouldn't be stretched. Whether or not a file is embeded or a link created, or some other solution used is again browser dependent and user configurable. The first argument is an URI and the second is a textual representation. It is very important to have descriptive representations for when that file type is not displayed visually. File embeding can be a security concern, interactive media types and cross-domain URIs might be disallowed by default by the we browser.</p>
 <pre>quote 1</pre>
 <p>Marks a context as being a quotation. Should probablybe part of a context with the information on the author.</p>
 <pre>listing 1</pre>
@@ -81,8 +82,29 @@
 <pre>define 2</pre>
 <p>This function allows the definition of new, non recursive, functions, for instance:</p>
 <pre>{define newchapter {section {header %1} %2}}</pre>
-<p>The symbols %1 and %2 are only understood inside a <i>define</i> function and can be escaped with \%. Outside of a <i>define</i> function they don't have to be escaped but it's a good practise since another document might embed yours and cause some confusion. Note that you still can't have more than two parameters.</p>
-<h3>What is expected of a web browser</h3>
+<p>The symbols %1 and %2 are only understood inside a <i>define</i> function and can be escaped with \%1 or \%2. Outside of a <i>define</i> function they cannot be escaped. You cannot use a <i>define</i> inside another <i>define</i> functions, since it would be ambiguous. <i>Defined</i> functions have their scope in the file they are declared in, an <i>embed</i> function cannot be used to export them and reuse them, while the functions that use it in the embeded file continue valid. You still cannot have more than two parameters and the number indicates the order of passage (%1 is the head of the arguments and %2 the rest). Argument invocation is made left to right.</p>
+<h3>User Interaction and input functions</h3>
+<pre>inputarea 2</pre>
+<p>Allows the user to input something, text and other media types. The underlying protocol should make it efficient to reject disallowed media types without reading unecessary data. The first argument is a codified hint of the expected input type, like textline, textmultiline, image, etc; this isn't used to specify the allowed media type, only the size and capabilities the browser should prefer to offer. The second argument is the long description of the use of the input. This description should contain things like the maximum file size, or maximum number of line changes in a text allowed; not just names like "Comment".</p>
+<pre>selectone 2</pre>
+<p>Offers a choice of a number of selectable contexts, described and numbered by its parameters number. It is also an existential operator that forces the user to select at least one of the options. The first argument is a context whose subcontexts are used to identify the options, the second is a long description.</p>
+<pre>selectany 2</pre>
+<p>Similar to <i>selectone</i> but any number of options may be selected, or not. The two can be mixed to ensure any number can be select and at the same time at least one option has to selected as well:</p>
+<pre>{selectone
+	{selectany
+		{
+			Option1
+			Option2
+			{ Option 3 }
+			Option4
+		}
+		You can select more than one though.
+	}
+	You must select at least one option.
+}</pre>
+<pre>button 2</pre>
+<p>Allows the user to make an action, that provokes a new client request to the server. The first argument specifies the context specified by a mark that should be updated; if it contains selectables and input areas their information is codified and sent; codified in a way relative to the innermost mark they are inserted in. Because of this it is often useful to include inputtables inside a <i>mark</i> functions. The server should respond with a new partial flowing web document that will replace the context inside the <i>mark</i> identified. This means a button can be used to easily refresh an online document by including it entirely on an initial <i>mark</i> function. It also means a button "press" cannot cause changes to the local document outside of the expectations of the user.</p>
+<h2>What is expected of a web browser</h2>
 <p>The web browser should be configurable about how the information is convened, and for each method what is the preferred way of doing so. For visual rendering it should be capable of automatic and on demand translation of text, spell checking, be flexible about how date/time, units and other country dependent information is displayed. It should also obey the user preferences on document information density, text orientation, rendering direction, text effects, font family and size, effects and colors for specific functions and background color. It should further be configurable on how to display descriptions, produce automatic short versions of text, embed some types of files and how to treat followed links by file type.<p>
 <p>For non-visual queues is should support text-to-speech conversion and audio queues, as well as speech-to-text conversion for word search.</p>
 <p>In general the browser should also be capable of supporting adding extra links, commentary, emphasis, notes and embed other media on their personal view on the document. This does not necessarily affect how others perceive the document, but this data should be reasonably expected to remain in place even if a document is changed by the host. When the host changes the document, the user should have the ability to see his changes on the previous, locally stored version of the document; and to his changes that remain valid in the new document.</p>
