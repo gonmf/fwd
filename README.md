@@ -1,4 +1,4 @@
 # fwd
 Flowing Web Documents
 
-http://gonmf.github.io/fwd/
+https://macro.win/fwd/
