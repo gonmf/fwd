@@ -132,6 +132,6 @@
 <h3>Implementation notes for web browsers</h3>
 <p>A document without any contexts uses by default the global context; there is no need for a global <i>body</i> context. When a browser is first run it is a good idea for it to try to notice some things from the system used (such as the unicode locale and screen size) as well as prompt the user for its 1st use setup. Also on the topic of locales there are no ways to specify it, so a web browser should assume unicode is used and use the locale according to the languages specified by the <i>language</i> function or the default for the system. Since there is no way to specify paragraphs it should also be useful to apply automatic paragraph breaks like LaTeX for instance. Finally, since the symbol for end of contexts is the same regardless of context, there might be some confusion on context formatting when the document is malformed. In this situation the web browser should present a non-intrusive warning and attempt to display the document to the best of it's abilities.</p>
 <hr>
-This proposal was written in the hope that it will be useful. For criticism please e-mail me at gonmf [at] sapo.pt, open an issue or submit a pull request in the <a href="https://github.com/gonmf/fwd">git repository</a>.
+This proposal was written in the hope that it will be useful. For criticism please e-mail me at gon@ik.me, open an issue or submit a pull request in the <a href="https://github.com/gonmf/fwd">git repository</a>.
 </body>
 </html>
